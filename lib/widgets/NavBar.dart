@@ -1,4 +1,4 @@
-import 'package:crescoo_seller/screens/NavigationBar/billing.dart';
+import 'package:crescoo_seller/screens/NavigationBar/add.dart';
 import 'package:crescoo_seller/screens/NavigationBar/inventory.dart';
 import 'package:crescoo_seller/screens/NavigationBar/pitch.dart';
 import 'package:crescoo_seller/screens/NavigationBar/profile.dart';
@@ -78,7 +78,7 @@ class _NavBarState extends State<NavBar> {
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(
-                        Icons.person,
+                        Icons.perm_identity_rounded,
                       ),
                       label: 'Profile',
                     ),

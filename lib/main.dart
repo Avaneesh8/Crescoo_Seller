@@ -1,6 +1,7 @@
 import 'package:crescoo_seller/provider/auth_provider.dart';
-import 'package:crescoo_seller/screens/NavigationBar/billing.dart';
+import 'package:crescoo_seller/screens/NavigationBar/add.dart';
 import 'package:crescoo_seller/screens/NavigationBar/pitch.dart';
+import 'package:crescoo_seller/screens/SplashScreen.dart';
 import 'package:crescoo_seller/widgets/NavBar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: "poppins",
       ),
-      home: NavBar(index: 0,),
+      home: SplashScreen(),
     );
   }
 }

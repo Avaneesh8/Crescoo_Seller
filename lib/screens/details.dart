@@ -1,13 +1,12 @@
-import 'package:crescoo_seller/widgets/NavBar.dart';
-import 'package:crescoo_seller/widgets/Top_part.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../model/user_model.dart';
 import '../provider/auth_provider.dart';
+import '../widgets/NavBar.dart';
+import '../widgets/Top_part.dart';
 
 class Details extends StatefulWidget {
-  const Details({Key? key,}) : super(key: key);
+  const Details({Key? key}) : super(key: key);
 
   @override
   State<Details> createState() => _DetailsState();
@@ -18,9 +17,21 @@ class _DetailsState extends State<Details> {
   final TextEditingController owner_name = TextEditingController();
   final TextEditingController address = TextEditingController();
 
+  final FocusNode ownerNameFocus = FocusNode();
+  final FocusNode addressFocus = FocusNode();
+  final FocusNode businessNameFocus = FocusNode();
+
+  @override
+  void dispose() {
+    // Dispose of the FocusNodes when they are no longer needed
+    ownerNameFocus.dispose();
+    addressFocus.dispose();
+    businessNameFocus.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-
     business_name.selection = TextSelection.fromPosition(
       TextPosition(
         offset: business_name.text.length,
@@ -36,6 +47,7 @@ class _DetailsState extends State<Details> {
         offset: address.text.length,
       ),
     );
+
     return Scaffold(
       body: Container(
         color: Colors.white,
@@ -43,13 +55,15 @@ class _DetailsState extends State<Details> {
           Column(
             children: [
               SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: .200 * MediaQuery.of(context).size.height,
-                  child: const Top_part()),
+                width: MediaQuery.of(context).size.width,
+                height: .200 * MediaQuery.of(context).size.height,
+                // Include your Top_part widget here
+                child: Top_part(),
+              ),
               SizedBox(
                 width: .25 * MediaQuery.of(context).size.width,
                 height: .1 * MediaQuery.of(context).size.height,
-                child: const FittedBox(
+                child: FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(
                     'Details',
@@ -68,6 +82,7 @@ class _DetailsState extends State<Details> {
                 child: TextFormField(
                   cursorColor: Colors.black,
                   controller: owner_name,
+                  focusNode: ownerNameFocus,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -93,6 +108,10 @@ class _DetailsState extends State<Details> {
                       borderSide: const BorderSide(color: Colors.black12),
                     ),
                   ),
+                  onEditingComplete: () {
+                    // Move the focus to the next field (Address)
+                    FocusScope.of(context).requestFocus(addressFocus);
+                  },
                 ),
               ),
               Padding(
@@ -101,6 +120,7 @@ class _DetailsState extends State<Details> {
                 child: TextFormField(
                   cursorColor: Colors.black,
                   controller: address,
+                  focusNode: addressFocus,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -126,6 +146,10 @@ class _DetailsState extends State<Details> {
                       borderSide: const BorderSide(color: Colors.black12),
                     ),
                   ),
+                  onEditingComplete: () {
+                    // Move the focus to the next field (Business Name)
+                    FocusScope.of(context).requestFocus(businessNameFocus);
+                  },
                 ),
               ),
               Padding(
@@ -134,6 +158,7 @@ class _DetailsState extends State<Details> {
                 child: TextFormField(
                   cursorColor: Colors.black,
                   controller: business_name,
+                  focusNode: businessNameFocus,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -164,7 +189,7 @@ class _DetailsState extends State<Details> {
               Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: GestureDetector(
-                  onTap: ()=>storeData(),
+                  onTap: () => storeData(),
                   child: Container(
                     decoration: BoxDecoration(
                         color: const Color.fromRGBO(189, 189, 199, 1),

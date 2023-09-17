@@ -39,16 +39,18 @@ class _PitchState extends State<Pitch> {
   int currentCharacterCount = 0;
   final int maxCharacterCount = 1000;
 
-  void _showErrorDialog() {
+  void _showErrorDialog(String message) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
           'Error',
-          style: TextStyle(color: Color.fromRGBO(26, 50, 81, 1),),
+          style: TextStyle(
+            color: Color.fromRGBO(26, 50, 81, 1),
+          ),
         ),
         content: Text(
-          'Please fill in all fields.',
+          message,
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
@@ -58,11 +60,11 @@ class _PitchState extends State<Pitch> {
               Navigator.of(context).pop();
             },
             style: ElevatedButton.styleFrom(
-              primary: Color.fromRGBO(26, 50, 81, 1), // Set button color
+              primary: Color.fromRGBO(26, 50, 81, 1),
             ),
             child: Text(
               'OK',
-              style: TextStyle(color: Colors.white), // Set button text color
+              style: TextStyle(color: Colors.white),
             ),
           ),
         ],
@@ -76,6 +78,13 @@ class _PitchState extends State<Pitch> {
 
     void PitchIdea() async {
       if (_formKey.currentState!.validate()) {
+        if (currentCharacterCount > maxCharacterCount) {
+          // Show character limit error dialog
+          _showErrorDialog(
+              'Character limit exceeded ($currentCharacterCount / $maxCharacterCount)');
+          return;
+        }
+
         // Save the data to Firestore
         await _firebaseFirestore.collection("Pitch").add({
           "Business Name": businessname.text.trim(),
@@ -112,7 +121,7 @@ class _PitchState extends State<Pitch> {
         );
       } else {
         // Show validation error dialog
-        _showErrorDialog();
+        _showErrorDialog('Please fill in all fields.');
       }
     }
 
@@ -131,7 +140,7 @@ class _PitchState extends State<Pitch> {
       // Set resizeToAvoidBottomInset to false to avoid automatically resizing
       // when the keyboard is opened.
       resizeToAvoidBottomInset: false,
-      body: ListView( // Wrap with a ListView
+      body: ListView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         children: [
           Container(
@@ -156,14 +165,21 @@ class _PitchState extends State<Pitch> {
                     children: [
                       Container(
                         width: .8 * MediaQuery.of(context).size.width,
-                        height: 50,
+                        height: 70,
                         decoration: ShapeDecoration(
-                          color: Color(0xFFF3F3F2),
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(width: 1),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
+                            color: Color(0xFFF3F3F2),
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(width: 1),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            shadows: [
+                              BoxShadow(
+                                color: Color(0x3F000000),
+                                blurRadius: 4,
+                                offset: Offset(4, 4),
+                                spreadRadius: 0,
+                              )
+                            ]),
                         child: TextFormField(
                           cursorColor: Colors.black,
                           controller: businessname,
@@ -187,11 +203,13 @@ class _PitchState extends State<Pitch> {
                             border: InputBorder.none,
                           ),
                           validator: (value) {
+                            if (value!.isEmpty) {
+                              return '';
+                            }
                             // You can add more constraints here if needed
                             return null;
                           },
                           onEditingComplete: () {
-                            // Move the focus to the next field (Business Idea)
                             FocusScope.of(context).nextFocus();
                           },
                         ),
@@ -206,6 +224,14 @@ class _PitchState extends State<Pitch> {
                             side: BorderSide(width: 1),
                             borderRadius: BorderRadius.circular(12),
                           ),
+                            shadows: [
+                              BoxShadow(
+                                color: Color(0x3F000000),
+                                blurRadius: 4,
+                                offset: Offset(4, 4),
+                                spreadRadius: 0,
+                              )
+                            ]
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
@@ -227,7 +253,8 @@ class _PitchState extends State<Pitch> {
                                 },
                                 maxLines: 7,
                                 decoration: InputDecoration(
-                                  hintText: "Add a description about your business",
+                                  hintText:
+                                      "Add a description about your business",
                                   hintStyle: const TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 15,
@@ -239,7 +266,6 @@ class _PitchState extends State<Pitch> {
                                   if (value!.isEmpty) {
                                     return '';
                                   }
-                                  // You can add more constraints here if needed
                                   return null;
                                 },
                               ),
@@ -267,7 +293,8 @@ class _PitchState extends State<Pitch> {
                               border: Border.all(
                                 color: Color.fromRGBO(26, 50, 81, 1),
                               ),
-                              borderRadius: BorderRadius.all(Radius.circular(25)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(25)),
                             ),
                             constraints: BoxConstraints(
                               minWidth: 200,
@@ -277,7 +304,8 @@ class _PitchState extends State<Pitch> {
                             child: Center(
                               child: Text(
                                 "Pitch",
-                                style: TextStyle(color: Colors.white, fontSize: 25),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 25),
                               ),
                             ),
                           ),
