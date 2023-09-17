@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crescoo_seller/screens/SplashScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +15,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+
   @override
   Widget build(BuildContext context) {
     final ap = Provider.of<AuthProvider>(context, listen: false);
@@ -69,28 +71,28 @@ class _ProfileState extends State<Profile> {
                         Padding(
                           padding: const EdgeInsets.only(top: 20),
                           child: Text(
-                            "abcd",//ap.userModel.ownername,
+                            ap.userModel.shopname,
                             style: TextStyle(fontSize: 20),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 20),
                           child: Text(
-                            "abcd",//ap.userModel.ownername,
+                            ap.userModel.ownername,
                             style: TextStyle(fontSize: 20),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 20),
                           child: Text(
-                            "abcd",//ap.userModel.ownername,
+                            ap.userModel.address,
                             style: TextStyle(fontSize: 20),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 20),
                           child: Text(
-                            "abcd",//ap.userModel.ownername,
+                            ap.userModel.phoneNumber,
                             style: TextStyle(fontSize: 20),
                           ),
                         ),

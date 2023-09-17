@@ -164,7 +164,7 @@ class _DetailsState extends State<Details> {
               Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: GestureDetector(
-                  onTap: (){},//storeData(),
+                  onTap: ()=>storeData(),
                   child: Container(
                     decoration: BoxDecoration(
                         color: const Color.fromRGBO(189, 189, 199, 1),
@@ -211,7 +211,7 @@ class _DetailsState extends State<Details> {
                 (value) => Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const NavBar(),
+                  builder: (context) => const NavBar(index: 0,),
                 ),
                     (route) => false),
           ),

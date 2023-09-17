@@ -46,6 +46,7 @@ dependencies:
   get: ^4.6.5
   provider: ^6.0.4
   simple_icons: ^7.10.0
+  fluttertoast: ^8.0.8
 
 dev_dependencies:
   flutter_test:

@@ -1,3 +1,4 @@
+import 'package:crescoo_seller/screens/Details.dart';
 import 'package:crescoo_seller/screens/SignUp.dart';
 import 'package:crescoo_seller/widgets/NavBar.dart';
 import 'package:flutter/material.dart';
@@ -144,7 +145,7 @@ class _OTPScreenState extends State<OTPScreen> {
                         (value) => Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => NavBar(),
+                          builder: (context) => NavBar(index: 0,),
                         ),
                             (route) => false),
                   ),
@@ -154,7 +155,7 @@ class _OTPScreenState extends State<OTPScreen> {
               // new user
               Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => const SignUp()),
+                  MaterialPageRoute(builder: (context) => const Details()),
                       (route) => false);
             }
           },

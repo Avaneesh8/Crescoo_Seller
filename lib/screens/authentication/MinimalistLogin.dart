@@ -57,7 +57,7 @@ class MinimalistLogin extends StatelessWidget {
                           () => Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const NavBar(),
+                          builder: (context) => const NavBar(index: 0,),
                         ),
                       ),
                     );

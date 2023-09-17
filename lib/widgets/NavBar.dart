@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 
 
 class NavBar extends StatefulWidget {
-  const NavBar({Key? key});
+  final int index;
+  const NavBar({Key? key,required this.index});
 
   @override
   State<NavBar> createState() => _NavBarState();
@@ -21,6 +22,12 @@ class _NavBarState extends State<NavBar> {
     Pitch(),
     Profile(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.index; // Initialize _currentIndex with the provided index
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,13 +68,13 @@ class _NavBarState extends State<NavBar> {
                       icon: Icon(
                         Icons.edit_note,
                       ),
-                      label: 'Billing',
+                      label: 'Add',
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(
                         Icons.lightbulb_outline_rounded,
                       ),
-                      label: 'Billing',
+                      label: 'Pitch',
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(
