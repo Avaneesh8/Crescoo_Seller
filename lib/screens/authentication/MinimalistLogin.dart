@@ -1,4 +1,3 @@
-import 'package:crescoo_seller/screens/SignUp.dart';
 import 'package:crescoo_seller/widgets/NavBar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

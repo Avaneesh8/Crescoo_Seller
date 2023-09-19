@@ -20,7 +20,16 @@ class _DetailsState extends State<Details> {
   final FocusNode ownerNameFocus = FocusNode();
   final FocusNode addressFocus = FocusNode();
   final FocusNode businessNameFocus = FocusNode();
-
+  final List<String> cities = [
+    'Mumbai',
+    'Delhi',
+    'Bangalore',
+    'Hyderabad',
+    'Chennai',
+    'Kolkata',
+    'Pune',
+  ]; // Add your list of cities here
+  String selectedCity = "Mumbai";
   @override
   void dispose() {
     // Dispose of the FocusNodes when they are no longer needed
@@ -72,6 +81,40 @@ class _DetailsState extends State<Details> {
                       fontSize: 35,
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding:
+                const EdgeInsets.symmetric(vertical: 20, horizontal: 35),
+                child: TextFormField(
+                  cursorColor: Colors.black,
+                  controller: business_name,
+                  focusNode: businessNameFocus,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      business_name.text = value;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    hintText: "Business Name",
+                    hintStyle: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15,
+                      color: Colors.grey.shade600,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.black12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.black12),
                     ),
                   ),
                 ),
@@ -152,25 +195,25 @@ class _DetailsState extends State<Details> {
                   },
                 ),
               ),
+
               Padding(
-                padding:
-                const EdgeInsets.symmetric(vertical: 20, horizontal: 35),
-                child: TextFormField(
-                  cursorColor: Colors.black,
-                  controller: business_name,
-                  focusNode: businessNameFocus,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  onChanged: (value) {
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 35),
+                child: DropdownButtonFormField(
+                  value: selectedCity,
+                  onChanged: (newValue) {
                     setState(() {
-                      business_name.text = value;
+                      selectedCity = newValue.toString();
                     });
                   },
+                  items: cities.map((city) {
+                    return DropdownMenuItem(
+                      value: city,
+                      child: Text(city),
+                    );
+                  }).toList(),
                   decoration: InputDecoration(
-                    hintText: "Business Name",
-                    hintStyle: TextStyle(
+                    labelText: 'City',
+                    labelStyle: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 15,
                       color: Colors.grey.shade600,
@@ -226,6 +269,7 @@ class _DetailsState extends State<Details> {
       shopname: business_name.text.trim(),
       ownername: owner_name.text.trim(),
       address: address.text.trim(),
+      city: selectedCity,
     );
     ap.saveUserDataToFirebase(
       context: context,

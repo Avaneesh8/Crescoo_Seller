@@ -20,8 +20,19 @@ class _ProfileState extends State<Profile> {
   TextEditingController _ownerNameController = TextEditingController();
   TextEditingController _addressController = TextEditingController();
   TextEditingController _phoneNumberController = TextEditingController();
-
+  String _selectedCity = "Mumbai"; // Default city selection
   bool _isEditing = false; // Flag to track if editing mode is enabled
+
+  // List of cities for the dropdown menu
+  final List<String> cities = [
+    "Mumbai",
+    "Delhi",
+    "Bangalore",
+    "Hyderabad",
+    "Chennai",
+    "Kolkata",
+    "Pune",
+  ];
 
   @override
   void initState() {
@@ -32,6 +43,7 @@ class _ProfileState extends State<Profile> {
     _ownerNameController.text = ap.userModel.ownername;
     _addressController.text = ap.userModel.address;
     _phoneNumberController.text = ap.userModel.phoneNumber;
+    _selectedCity = ap.userModel.city;
   }
 
   @override
@@ -63,6 +75,7 @@ class _ProfileState extends State<Profile> {
     ap.userModel.ownername = editedOwnerName;
     ap.userModel.address = editedAddress;
     ap.userModel.phoneNumber = editedPhoneNumber;
+    ap.userModel.city = _selectedCity;
 
     try {
       // Update the user data in Firestore
@@ -75,6 +88,7 @@ class _ProfileState extends State<Profile> {
         'owner name': editedOwnerName,
         'address': editedAddress,
         'phoneNumber': editedPhoneNumber,
+        'city': _selectedCity,
       });
 
       // Exit edit mode
@@ -102,144 +116,211 @@ class _ProfileState extends State<Profile> {
                   child: const Top_part(),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * .04),
-                Container(
-                  width: MediaQuery.of(context).size.width * .85,
-                  height: MediaQuery.of(context).size.height * .50,
-                  decoration: ShapeDecoration(
-                    color: Color(0xFFE0DEDE),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25),
+                SingleChildScrollView(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * .85,
+                    height: MediaQuery.of(context).size.height * .50,
+                    decoration: ShapeDecoration(
+                      color: Color(0xFFE0DEDE),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      shadows: [
+                        BoxShadow(
+                          color: Color(0x3F000000),
+                          blurRadius: 4,
+                          offset: Offset(10, 10),
+                          spreadRadius: 0,
+                        )
+                      ],
                     ),
-                    shadows: [
-                      BoxShadow(
-                        color: Color(0x3F000000),
-                        blurRadius: 4,
-                        offset: Offset(10, 10),
-                        spreadRadius: 0,
-                      )
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 35,right: 35,top:10,bottom: 10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 35,right: 35,top:10,bottom: 10),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "Seller",
-                              style: TextStyle(
-                                fontSize: 35,
-                                fontFamily: 'Poppins',
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Seller",
+                                  style: TextStyle(
+                                    fontSize: 35,
+                                    fontFamily: 'Poppins',
+                                  ),
+                                ),
+                                _isEditing
+                                    ? IconButton(
+                                        icon: Icon(Icons.save),
+                                        onPressed: _saveChanges,
+                                      )
+                                    : IconButton(
+                                        icon: Icon(Icons.edit),
+                                        onPressed: _toggleEdit,
+                                      ),
+                              ],
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(vertical: 8.0), // Add vertical padding
+                              constraints: BoxConstraints(
+                                maxWidth: 400.0, // Limit the maximum width
+                              ),
+                              child: TextFormField(
+                                controller: _shopNameController,
+                                readOnly: !_isEditing,
+                                decoration: InputDecoration(
+                                  labelText: 'Shop Name',
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color.fromRGBO(26, 50, 81, 1), // Set border color when not focused
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color.fromRGBO(26, 50, 81, 1), // Set border color when focused
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(vertical: 8.0), // Add vertical padding
+                              constraints: BoxConstraints(
+                                maxWidth: 400.0, // Limit the maximum width
+                              ),
+                              child: TextFormField(
+                                controller: _ownerNameController,
+                                readOnly: true, // Always read-only
+                                decoration: InputDecoration(
+                                  labelText: 'Owner Name',
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color.fromRGBO(26, 50, 81, 1), // Set border color when not focused
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color.fromRGBO(26, 50, 81, 1), // Set border color when focused
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(vertical: 8.0), // Add vertical padding
+                              constraints: BoxConstraints(
+                                maxWidth: 400.0, // Limit the maximum width
+                              ),
+                              child: TextFormField(
+                                controller: _addressController,
+                                readOnly: !_isEditing,
+                                decoration: InputDecoration(
+                                  labelText: 'Address',
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color.fromRGBO(26, 50, 81, 1), // Set border color when not focused
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color.fromRGBO(26, 50, 81, 1), // Set border color when focused
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                             _isEditing
-                                ? IconButton(
-                                    icon: Icon(Icons.save),
-                                    onPressed: _saveChanges,
-                                  )
-                                : IconButton(
-                                    icon: Icon(Icons.edit),
-                                    onPressed: _toggleEdit,
+                                ? Container(
+                              padding: EdgeInsets.symmetric(vertical: 8.0),
+                              constraints: BoxConstraints(
+                                maxWidth: 400.0,
+                              ),
+                              child: DropdownButtonFormField<String>(
+                                value: _selectedCity,
+                                items: cities.map((city) {
+                                  return DropdownMenuItem<String>(
+                                    value: city,
+                                    child: Text(city),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedCity = value!;
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  labelText: 'City',
+                                  labelStyle: TextStyle(
+                                    color: Color.fromRGBO(26, 50, 81, 1),
                                   ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color.fromRGBO(26, 50, 81, 1),
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color.fromRGBO(26, 50, 81, 1),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                                : Container(
+                              padding: EdgeInsets.symmetric(vertical: 8.0),
+                              constraints: BoxConstraints(
+                                maxWidth: 400.0,
+                              ),
+                              child: TextFormField(
+                                controller: TextEditingController(text: _selectedCity),
+                                readOnly: true,
+                                decoration: InputDecoration(
+                                  labelText: 'City',
+                                  labelStyle: TextStyle(
+                                    color: Color.fromRGBO(26, 50, 81, 1),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color.fromRGBO(26, 50, 81, 1),
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color.fromRGBO(26, 50, 81, 1),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(vertical: 8.0), // Add vertical padding
+                              constraints: BoxConstraints(
+                                maxWidth: 400.0, // Limit the maximum width
+                              ),
+                              child: TextFormField(
+                                controller: _phoneNumberController,
+                                readOnly: true,
+                                decoration: InputDecoration(
+                                  labelText: 'Phone Number',
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color.fromRGBO(26, 50, 81, 1), // Set border color when not focused
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color.fromRGBO(26, 50, 81, 1), // Set border color when focused
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+
                           ],
                         ),
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 8.0), // Add vertical padding
-                          constraints: BoxConstraints(
-                            maxWidth: 400.0, // Limit the maximum width
-                          ),
-                          child: TextFormField(
-                            controller: _shopNameController,
-                            readOnly: !_isEditing,
-                            decoration: InputDecoration(
-                              labelText: 'Shop Name',
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color.fromRGBO(26, 50, 81, 1), // Set border color when not focused
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color.fromRGBO(26, 50, 81, 1), // Set border color when focused
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 8.0), // Add vertical padding
-                          constraints: BoxConstraints(
-                            maxWidth: 400.0, // Limit the maximum width
-                          ),
-                          child: TextFormField(
-                            controller: _ownerNameController,
-                            readOnly: true, // Always read-only
-                            decoration: InputDecoration(
-                              labelText: 'Owner Name',
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color.fromRGBO(26, 50, 81, 1), // Set border color when not focused
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color.fromRGBO(26, 50, 81, 1), // Set border color when focused
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 8.0), // Add vertical padding
-                          constraints: BoxConstraints(
-                            maxWidth: 400.0, // Limit the maximum width
-                          ),
-                          child: TextFormField(
-                            controller: _addressController,
-                            readOnly: !_isEditing,
-                            decoration: InputDecoration(
-                              labelText: 'Address',
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color.fromRGBO(26, 50, 81, 1), // Set border color when not focused
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color.fromRGBO(26, 50, 81, 1), // Set border color when focused
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 8.0), // Add vertical padding
-                          constraints: BoxConstraints(
-                            maxWidth: 400.0, // Limit the maximum width
-                          ),
-                          child: TextFormField(
-                            controller: _phoneNumberController,
-                            readOnly: true,
-                            decoration: InputDecoration(
-                              labelText: 'Phone Number',
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color.fromRGBO(26, 50, 81, 1), // Set border color when not focused
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color.fromRGBO(26, 50, 81, 1), // Set border color when focused
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-
-                      ],
+                      ),
                     ),
                   ),
                 ),

@@ -58,6 +58,7 @@ class _BillingState extends State<Billing> {
           .where('productID', isEqualTo: productID)
           .where('price', isEqualTo: price)
           .where('category', isEqualTo: _selectedCategory)
+      .where('shop name',isEqualTo: ap.userModel.shopname)
           .get();
 
       if (existingDocs.docs.isNotEmpty) {
@@ -100,6 +101,8 @@ class _BillingState extends State<Billing> {
           'category': _selectedCategory,
           'phoneNumber': ap.userModel.phoneNumber,
           'address': ap.userModel.address,
+          'city':ap.userModel.city,
+          'shop name':ap.userModel.shopname,
         };
 
         // Save the data to Firestore

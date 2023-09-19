@@ -7,6 +7,7 @@ class UserModel {
   String phoneNumber;
   String uid;
   String createdAt;
+  String city;
 
   UserModel({
     required this.ownername,
@@ -15,6 +16,7 @@ class UserModel {
     required this.phoneNumber,
     required this.uid,
     required this.createdAt,
+    required this.city,
   });
 
   // from map
@@ -26,6 +28,7 @@ class UserModel {
       uid: map['uid'] ?? '',
       phoneNumber: map['phone Number'] ?? '',
       createdAt :map['createdAt']??'',
+      city: map['city']??'',
     );
   }
 
@@ -37,7 +40,8 @@ class UserModel {
       "address":address,
       "uid": uid,
       "phoneNumber": phoneNumber,
-      "created At":createdAt
+      "created At":createdAt,
+      "city":city,
     };
   }
 }
