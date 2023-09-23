@@ -1,8 +1,6 @@
 # Crescoo_Seller
 
 
----
-
 ## Table of Contents
 
 - [Introduction](#introduction)
