@@ -1,6 +1,5 @@
 # Crescoo_Seller
 
-Certainly, here's a README file for the Crescoo Seller application:
 
 ---
 
